@@ -18,7 +18,7 @@ router.post('/', function (req, res) {
   });
 });
 
-// returns all of the users in the database
+// gets all of the users in the database
 router.get('/', function(req, res) {
   User.find({}, function(err, users) {
     if (err) return res.status(500).send("There was a problem finding the users.");
@@ -26,12 +26,20 @@ router.get('/', function(req, res) {
   });
 });
 
-// gets a single user from the database
+// gets a single user from the database by id
 router.get('/:id', function(req, res) {
   User.findById(req.params.id, function (err, user) {
     if (err) return res.status(500).send("There was a problem finding the user.");
     if (!user) return res.status(404).send("No user found.");
     res.status(200).send(user);
+  });
+});
+
+// deletes a user from the database by id
+router.delete('/:id', function (req, res) {
+  User.findByIdAndRemove(req.params.id, function (err, user) {
+    if (err) return res.status(500).send("There was a problem deleting the user.");
+    res.status(200).send("User "+ user.name +" was deleted.");
   });
 });
 
